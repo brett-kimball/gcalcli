@@ -1671,6 +1671,12 @@ class gcalcli:
                     print "Event........%s" % ve.summary.value
                 event['summary'] = ve.summary.value
 
+            if hasattr(ve, 'uid'):
+                DebugPrint("iCalUID: %s\n" % ve.uid.value)
+                if verbose:
+                    print "iCalUID......%s" % ve.uid.value
+                event['icaluid'] = ve.uid.value
+
             if hasattr(ve, 'location'):
                 DebugPrint("LOCATION: %s\n" % ve.location.value)
                 if verbose:
@@ -1815,7 +1821,7 @@ class gcalcli:
             except StopIteration:
                 break
 
-            v.prettyPrint()
+            #v.prettyPrint()
 
             for ve in v.vevent_list:
 
