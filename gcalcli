@@ -305,8 +305,8 @@ def PrintMsg(color, msg):
         sys.stdout.write(msg)
 
 def DebugPrint(msg):
-    return
     PrintMsg(CLR_YLW(), msg)
+    return
 
 def dprint(obj):
     try:
@@ -382,6 +382,7 @@ class gcalcli:
     calMonday     = False
     command       = 'notify-send -u critical -a gcalcli %s'
     tsv           = False
+    sync          = False
     dateParser    = DateTimeParser()
 
     detailCalendar   = False
@@ -427,6 +428,7 @@ class gcalcli:
                  nowMarkerColor=CLR_BRRED(),
                  borderColor=CLR_WHT(),
                  tsv=False,
+                 sync=False,
                  refreshCache=False,
                  useCache=True,
                  configFolder=None,
@@ -438,6 +440,7 @@ class gcalcli:
         self.calWidth      = calWidth
         self.calMonday     = calMonday
         self.tsv           = tsv
+        self.sync          = sync
         self.refreshCache  = refreshCache
         self.useCache      = useCache
 
@@ -1793,6 +1796,9 @@ class gcalcli:
             PrintErrMsg("Must specify a single calendar\n")
             return
 
+        if sync:
+            DebugPrint("Synchronization option enabled\n")
+
         f = sys.stdin
 
         if icsFile:
@@ -1918,6 +1924,7 @@ gflags.DEFINE_integer("detail_description_width", 80, "Set description width")
 gflags.DEFINE_enum("detail_url", None, ["long", "short"], "Set URL output")
 
 gflags.DEFINE_bool("tsv", False, "Use Tab Seperated Value output")
+gflags.DEFINE_bool("sync", False, "Synchronize calendar with ICS file")
 gflags.DEFINE_bool("started", True, "Show events that have started")
 gflags.DEFINE_integer("width", 10, "Set output width", short_name="w")
 gflags.DEFINE_bool("monday", False, "Start the week on Monday")
@@ -2101,6 +2108,7 @@ def BowChickaWowWow():
                    nowMarkerColor=GetColor(FLAGS.color_now_marker),
                    borderColor=GetColor(FLAGS.color_border),
                    tsv=FLAGS.tsv,
+                   sync=FLAGS.sync,
                    refreshCache=FLAGS.refresh,
                    useCache=FLAGS.cache,
                    configFolder=FLAGS.configFolder,
